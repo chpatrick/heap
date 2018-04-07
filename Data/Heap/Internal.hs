@@ -31,6 +31,7 @@ import Control.Exception
 import Data.Foldable ( Foldable(foldl, foldr, foldMap), foldl' )
 import Data.List ( groupBy, sortBy )
 import Data.Monoid
+import Data.Semigroup
 import Data.Ord
 import Data.Typeable
 import Prelude hiding ( foldl, foldr, span, splitAt, foldMap )
@@ -66,9 +67,11 @@ instance (Ord prio, Ord val) => Eq (HeapT prio val) where
 instance (Ord prio, Ord val) => Ord (HeapT prio val) where
     compare = comparing toPairAscList
 
+instance (Ord prio) => Semigroup (HeapT prio val) where
+    (<>) = union
+
 instance (Ord prio) => Monoid (HeapT prio val) where
     mempty  = empty
-    mappend = union
     mconcat = unions
 
 instance Functor (HeapT prio) where
